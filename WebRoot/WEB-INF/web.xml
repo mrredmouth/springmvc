@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>spring5.0.8</display-name>
+  
+ <!--  配置HiddenHttpMethodFilter：可以将POST请求转变为PUT和DELETE请求。 -->
+  <filter>
+  	<filter-name>HiddenHttpMethodFilter</filter-name>
+  	<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>HiddenHttpMethodFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <!-- spring MVC配置：配置springDispatcherServlet -->
+  <servlet>
+  	<servlet-name>springDispatcherServlet</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<!-- 配置springDispatcherServlet的初始化参数：SpringMVC配置文件的位置和名称。
+  		也可以不在里面配，而是在WEB-INF下采用默认配置文件，文件名为：<servlet-name>+"-servvlet.xml"，
+  		这样做的好处可以与spring做整合，配置文件分开 -->
+  	<!-- <init-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>classpath:springmvc.xml</param-value>
+  	</init-param> -->
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>springDispatcherServlet</servlet-name>
+  	<!-- springMvc前端控制器，不能写成/* ，否则访问jsp会以源码的形式体现 --> 
+  	<url-pattern>/</url-pattern>
+  </servlet-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>/index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
