@@ -3,6 +3,10 @@
 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>spring5.0.8</display-name>
   
+  <listener>
+    <listener-class>com.ccg.springmvc.sso.listener.MySessionListener</listener-class>
+  </listener>
+  
  <!--  配置HiddenHttpMethodFilter：可以将POST请求转变为PUT和DELETE请求。 -->
   <filter>
   	<filter-name>HiddenHttpMethodFilter</filter-name>

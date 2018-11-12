@@ -16,7 +16,7 @@
        
 	<!-- 配置自定义扫描的包 -->
 	<context:component-scan base-package="com.ccg.springmvc.handlers"></context:component-scan>
-	<context:component-scan base-package="com.ccg.springmvc.controller"></context:component-scan>
+	<context:component-scan base-package="com.ccg.springmvc.sso.controller"></context:component-scan>
 	<!-- 配置视图解析器，将handler方法的返回值解析为实际的物理视图 :
 			实际物理视图 = prefix + handler方法返回的字符串 + suffix  -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

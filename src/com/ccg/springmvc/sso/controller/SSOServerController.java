@@ -1,16 +1,19 @@
-package com.ccg.springmvc.controller;
+package com.ccg.springmvc.sso.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ccg.springmvc.entities.MockDataBase;
+import com.ccg.springmvc.sso.entities.ClientInfoVo;
+import com.ccg.springmvc.sso.entities.MockDataBase;
 
 @Controller
 public class SSOServerController {
@@ -26,7 +29,7 @@ public class SSOServerController {
 			return "login";
 		}else{
 			//有可能是缓存带过来的token，则要重新登录
-			String verifyToken = verifyToken(token,model);
+			String verifyToken = verifyToken(token,null,null);
 			if(!"true".equals(verifyToken)){
 				model.addAttribute("redirectUrl", redirectUrl);
 				return "login";
@@ -66,11 +69,37 @@ public class SSOServerController {
 	 */
 	@RequestMapping("/verify")
 	@ResponseBody  //加上此，则表示返回值以String的形式返回即可；不加，则表示返回一个视图；
-	public String verifyToken(String token,Model model){
+	public String verifyToken(String token,String clientLogOutUrl,String jsessionId){
 		if(MockDataBase.T_TOKEN.contains(token)){
+			if(StringUtils.isNotBlank(clientLogOutUrl) && StringUtils.isNotBlank(jsessionId)){
+				//把客户端的登出地址记录起来
+				List<ClientInfoVo> clientInfoList = MockDataBase.T_CLIENT_INFO.get(token);
+				if(clientInfoList == null){
+					clientInfoList = new ArrayList<ClientInfoVo>();
+					MockDataBase.T_CLIENT_INFO.put(token, clientInfoList);
+				}
+				clientInfoList.add(new ClientInfoVo(clientLogOutUrl,jsessionId));
+			}
 			return "true";
 		}
 		return "false";
 	}
 	
+	@RequestMapping("/logOut")
+	public String logOut(HttpSession session){
+		//1、销毁全局会话session
+		session.invalidate();
+		//2、获取子系统的session，并依次销毁。大session销毁，则子系统都销毁，放到监听事件中去
+		
+		return "logOut";
+	}
 }
+
+
+
+
+
+
+
+
+
