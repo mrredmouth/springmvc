@@ -17,7 +17,7 @@ public class HttpUtils {
 		//设置请求方式，需要大写
 		conn.setRequestMethod("POST");
 		//设置需要输出
-		conn.setDoOutput(false);
+		conn.setDoOutput(true);
 		conn.addRequestProperty("Cookie", "JSESSIONID="+jsessionId);
 		//发送请求到服务器
 		conn.connect();
